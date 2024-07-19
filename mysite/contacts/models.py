@@ -13,6 +13,11 @@ class Contact(BaseModel):
     def __str__(self):
         return self.full_name
 
+    class Meta:
+        indexes = [
+            models.Index(fields=["full_name"]),
+        ]
+
 
 class PhoneNumber(BaseModel):
     contact = models.ForeignKey(Contact, related_name="phone_numbers", on_delete=models.CASCADE)

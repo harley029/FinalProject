@@ -13,7 +13,7 @@ class MainView(ListView):
     context_object_name = "records"
 
     def get_queryset(self):
-        return Record.objects.filter(contact__author=self.request.user)
+        return Record.objects.filter(contact__author=self.request.user).order_by("contact__full_name")
 
 
 class RecordDetailView(DetailView):
@@ -31,7 +31,7 @@ class RecordDetailView(DetailView):
 
 class TagDetailView(View):
     def get(self, request, tag_name, page=1):
-        records = Record.objects.filter(tags__name=tag_name).order_by("id")
+        records = Record.objects.filter(tags__name=tag_name).order_by('contact__full_name')
         paginator = Paginator(records, 10)
         page_number = request.GET.get("page", page)
         records_on_page = paginator.get_page(page_number)
