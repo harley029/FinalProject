@@ -18,19 +18,25 @@ class MainView(ListView):
 
 class RecordDetailView(DetailView):
     model = Contact
-    template_name = "contacts/conyact_details.html"
+    template_name = "contacts/contact_details.html"
     context_object_name = "contact"
-    pk_url_kwargs = "contact_id"
+    pk_url_kwarg = "contact_id"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["phone_numbers"] = PhoneNumber.objects.filter(contact=self.object)
+        context["note"] = Record.objects.filter(contact=self.object).first().note
+        return context
 
 
 class TagDetailView(View):
-    def get(self, tag_name, page=1):
+    def get(self, request, tag_name, page=1):
         records = Record.objects.filter(tags__name=tag_name).order_by("id")
         paginator = Paginator(records, 10)
-        page_number = request.GET.get("page") or page
-        tags_on_page = paginator.get_page(page_number)
+        page_number = request.GET.get("page", page)
+        records_on_page = paginator.get_page(page_number)
         return render(
             request,
-            "records/tag_details.html",
-            context={"tag": tag_name, "records": tags_on_page},
+            "contacts/tag_details.html",
+            context={"tag": tag_name, "contacts": records_on_page},
         )
