@@ -6,8 +6,9 @@
   <div class="col-md-8">
     {% for contact in contacts %}
     <div class="quote" itemscope="" itemtype="http://schema.org/CreativeWork">
+      <span><small class="author" itemprop="author"><a href="{% url 'contact_detail' contact_id=contact.contact.id %}">{{ contact.contact.full_name }}</a></small></span>
       <span class="text" itemprop="text">{{ contact.note }}</span>
-      <span>by <small class="author" itemprop="author"><a href="{% url 'contact_detail' contact_id=contact.contact.id %}">{{ contact.contact.full_name }}</a></small></span>
+      
       <div class="tags">
         Tags: {% for tag in contact.tags.all %}
         <a class="tag" href="{% url 'tag_detail_paginate' tag_name=tag.name page=1 %}">{{ tag.name }}</a>
