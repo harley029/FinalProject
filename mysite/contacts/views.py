@@ -6,12 +6,8 @@ from django.contrib.auth.decorators import login_required
 
 from contacts.models import Record, Contact, PhoneNumber, Tag
 
-class HomeView(View):
 
-    def get(self, request):
-        return render(request, "contacts/home.html")
-
-
+@method_decorator(login_required, name="dispatch")
 class MainView(ListView):
     model = Record
     template_name = "contacts/index.html"
@@ -21,6 +17,7 @@ class MainView(ListView):
         return Record.objects.filter(contact__author=self.request.user).order_by("contact__full_name")
 
 
+@method_decorator(login_required, name="dispatch")
 class RecordDetailView(DetailView):
     model = Contact
     template_name = "contacts/contact_details.html"
@@ -36,6 +33,7 @@ class RecordDetailView(DetailView):
         return context
 
 
+@method_decorator(login_required, name="dispatch")
 class TagDetailView(View):
     def get(self, request, tag_name, page=1):
         records = Record.objects.filter(tags__name=tag_name).order_by('contact__full_name')
