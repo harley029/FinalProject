@@ -46,6 +46,7 @@ INSTALLED_FRAMEWORKS = [
 
 LOCAL_APPS = [
     "core",
+    "home",
     "contacts",
 ]
 

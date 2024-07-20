@@ -1,4 +1,3 @@
-from urllib import request
 from django.views.generic import ListView, DetailView, View
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
@@ -6,6 +5,12 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 
 from contacts.models import Record, Contact, PhoneNumber, Tag
+
+class HomeView(View):
+
+    def get(self, request):
+        return render(request, "contacts/home.html")
+
 
 class MainView(ListView):
     model = Record
@@ -25,7 +30,9 @@ class RecordDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["phone_numbers"] = PhoneNumber.objects.filter(contact=self.object)
-        context["note"] = Record.objects.filter(contact=self.object).first().note
+        # Отримуємо першу нотатку або None, якщо записів немає
+        record = Record.objects.filter(contact=self.object).first()
+        context["note"] = record.note if record else "No notes available"
         return context
 
 
