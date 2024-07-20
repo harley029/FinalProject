@@ -4,6 +4,7 @@ from django.core.paginator import Paginator
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
+from django.views.generic import FormView
 
 from contacts.models import Record, Contact, PhoneNumber, Tag
 from contacts.forms import TagForm, PhoneNumberForm, ContactForm, RecordForm
@@ -134,3 +135,9 @@ class AddRecordView(TemplateView):
             record.save()
             return redirect("add_record")  # Перенаправлення після успішного збереження
         return self.render_to_response({"form": form})
+
+
+@method_decorator(login_required, name="dispatch")
+class SearchView(TemplateView):
+    template_name = "contacts/search_main.html"
+

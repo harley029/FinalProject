@@ -25,3 +25,4 @@ class RecordForm(forms.ModelForm):
     class Meta:
         model = Record
         fields = ["contact", "note", "tags"]
+

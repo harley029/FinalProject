@@ -8,6 +8,7 @@ from contacts.views import (
     AddPhoneView,
     AddContactView,
     AddRecordView,
+    SearchView,
 )
 
 urlpatterns = [
@@ -27,4 +28,5 @@ urlpatterns = [
     path("add-phone/", AddPhoneView.as_view(), name="add_phone"),
     path("contacts/add/", AddContactView.as_view(), name="add_contact"),
     path("contacts/add_record/", AddRecordView.as_view(), name="add_record"),
+    path("search/", SearchView.as_view(), name="main_search"),
 ]
