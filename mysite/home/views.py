@@ -8,4 +8,4 @@ from django.contrib.auth.decorators import login_required
 class HomeView(View):
 
     def get(self, request):
-        return render(request, "contacts/home.html")
+        return render(request, "home/home.html")
