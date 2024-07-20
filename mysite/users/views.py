@@ -1,3 +1,4 @@
+from smtplib import SMTPDataError
 from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.contrib import messages
@@ -9,7 +10,7 @@ from django.contrib.auth.views import PasswordResetView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 
-from .forms import RegisterForm
+from users.forms import RegisterForm
 
 
 class RegisterView(View):
@@ -57,3 +58,13 @@ class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
         "An email with instructions to reset your password has been sent to %(email)s."
     )
     subject_template_name = "users/password_reset_subject.txt"
+
+    def form_valid(self, form):
+        try:
+            response = super().form_valid(form)
+        except SMTPDataError as e:
+            if "spam" in str(e).lower():
+                return render(self.request, "users/password_reset_error.html")
+            else:
+                raise e
+        return response
