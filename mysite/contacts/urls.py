@@ -12,6 +12,8 @@ from contacts.views import (
     DeleteView,
     PhoneDeleteListView,
     PhoneDeleteConfirmView,
+    TagDeleteListView,
+    TagDeleteConfirmView,
 )
 
 urlpatterns = [
@@ -35,4 +37,6 @@ urlpatterns = [
     path("search/", SearchView.as_view(), name="main_search"),
     path("phones/delete/", PhoneDeleteListView.as_view(), name="phone_number_delete_list"),
     path("phone/<int:pk>/delete/", PhoneDeleteConfirmView.as_view(), name="phone_delete_confirm"),
+    path("tags/delete/", TagDeleteListView.as_view(), name="tag_delete_list"),
+    path("tag/<int:pk>/delete/", TagDeleteConfirmView.as_view(), name="tag_delete_confirm"),
 ]

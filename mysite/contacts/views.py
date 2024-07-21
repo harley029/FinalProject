@@ -174,6 +174,27 @@ class PhoneDeleteConfirmView(View):
         return redirect("phone_number_delete_list")
 
 
+@method_decorator(login_required, name="dispatch")
+class TagDeleteListView(View):
+    def get(self, request):
+        tags = Tag.objects.all()
+        return render(request, "contacts/delete/delete_tag_list.html", {"tags": tags})
+
+
+@method_decorator(login_required, name="dispatch")
+class TagDeleteConfirmView(View):
+    def get(self, request, pk):
+        tag = get_object_or_404(Tag, pk=pk)
+        return render(
+            request, "contacts/delete/confirm_delete_tag.html", {"object": tag}
+        )
+
+    def post(self, request, pk):
+        tag = get_object_or_404(Tag, pk=pk)
+        tag.delete()
+        return redirect("tag_delete_list")
+
+
 # @login_required
 # @require_POST
 # def delete_phone_number(request, pk):
