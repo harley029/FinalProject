@@ -56,12 +56,12 @@ class TagDetailView(View):
 
 @method_decorator(login_required, name="dispatch")
 class AddBookView(TemplateView):
-    template_name = "contacts/add_book.html"
+    template_name = "contacts/add/add_book.html"
 
 
 @method_decorator(login_required, name="dispatch")
 class AddTagView(TemplateView):
-    template_name = "contacts/add_tag.html"
+    template_name = "contacts/add/add_tag.html"
 
     def get(self, request, *args, **kwargs):
         form = TagForm()  # припустимо, що у вас є форма для додавання тегу
@@ -79,7 +79,7 @@ class AddTagView(TemplateView):
 
 @method_decorator(login_required, name="dispatch")
 class AddPhoneView(TemplateView):
-    template_name = "contacts/add_phone.html"
+    template_name = "contacts/add/add_phone.html"
 
     def get(self, request, *args, **kwargs):
         form = (
@@ -99,7 +99,7 @@ class AddPhoneView(TemplateView):
 
 @method_decorator(login_required, name="dispatch")
 class AddContactView(TemplateView):
-    template_name = "contacts/add_contact.html"
+    template_name = "contacts/add/add_contact.html"
 
     def get(self, request, *args, **kwargs):
         form = ContactForm()  # Використовуйте форму
@@ -121,7 +121,7 @@ class AddContactView(TemplateView):
 
 @method_decorator(login_required, name="dispatch")
 class AddRecordView(TemplateView):
-    template_name = "contacts/add_record.html"
+    template_name = "contacts/add/add_record.html"
 
     def get(self, request, *args, **kwargs):
         form = RecordForm()  # Створіть форму для GET запиту
@@ -139,11 +139,6 @@ class AddRecordView(TemplateView):
             record.save()
             return redirect("add_record")  # Перенаправлення після успішного збереження
         return self.render_to_response({"form": form})
-
-
-@method_decorator(login_required, name="dispatch")
-class SearchView(TemplateView):
-    template_name = "contacts/search_main.html"
 
 
 @method_decorator(login_required, name="dispatch")
@@ -254,3 +249,7 @@ class ContactDeleteConfirmView(View):
 #     return render(
 #         request, "contacts/confirm_delete_phone.html", {"object": phone_number}
 #     )
+
+@method_decorator(login_required, name="dispatch")
+class SearchView(TemplateView):
+    template_name = "contacts/search/search_main.html"

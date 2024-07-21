@@ -1,4 +1,4 @@
-{% extends 'contacts/base_add_data.html' %}
+{% extends 'contacts/add/base_add_data.html' %}
 
 {% load static %}
 
@@ -7,9 +7,9 @@
 <main id="content-start" class="content" tabindex="-1">
     <!-- Content -->
     <div id="content" class="colM">
-        <h1>Add record</h1>
+        <h1>Add contact</h1>
         <div id="content-main">
-            <form method="post" id="record_form" novalidate="">
+            <form method="post" id="contact_form" novalidate="">
                 {% csrf_token %}
                 {{ form.as_p }}
                 <div>
@@ -18,7 +18,7 @@
                         <input type="submit" value="Cancel" name="cancel">
                     </div>
                     <script id="django-admin-form-add-constants" src="/static/admin/js/change_form.js"
-                        data-model-name="record" async="">
+                        data-model-name="contact" async="">
                         </script>
                     <script id="django-admin-prepopulated-fields-constants" src="/static/admin/js/prepopulate_init.js"
                         data-prepopulated-fields="[]">
