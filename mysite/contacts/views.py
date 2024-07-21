@@ -5,6 +5,10 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 from django.views.generic import FormView
+from django.views.generic import DeleteView
+from django.urls import reverse, reverse_lazy
+from django.shortcuts import get_object_or_404
+# from django.views.decorators.http import require_POST
 
 from contacts.models import Record, Contact, PhoneNumber, Tag
 from contacts.forms import TagForm, PhoneNumberForm, ContactForm, RecordForm
@@ -141,3 +145,42 @@ class AddRecordView(TemplateView):
 class SearchView(TemplateView):
     template_name = "contacts/search_main.html"
 
+
+@method_decorator(login_required, name="dispatch")
+class DeleteView(TemplateView):
+    template_name = "contacts/delete/delete_main.html"
+
+
+@method_decorator(login_required, name="dispatch")
+class PhoneDeleteListView(View):
+    def get(self, request):
+        phone_numbers = PhoneNumber.objects.all()
+        return render(
+            request, "contacts/delete/delete_phone_list.html", {"phone_numbers": phone_numbers}
+        )
+
+
+@method_decorator(login_required, name="dispatch")
+class PhoneDeleteConfirmView(View):
+    def get(self, request, pk):
+        phone_number = get_object_or_404(PhoneNumber, pk=pk)
+        return render(
+            request, "contacts/delete/confirm_delete_phone.html", {"object": phone_number}
+        )
+
+    def post(self, request, pk):
+        phone_number = get_object_or_404(PhoneNumber, pk=pk)
+        phone_number.delete()
+        return redirect("phone_number_delete_list")
+
+
+# @login_required
+# @require_POST
+# def delete_phone_number(request, pk):
+#     phone_number = get_object_or_404(PhoneNumber, pk=pk)
+#     if request.method == "POST":
+#         phone_number.delete()
+#         return redirect(reverse_lazy("phone_number_delete_list"))
+#     return render(
+#         request, "contacts/confirm_delete_phone.html", {"object": phone_number}
+#     )

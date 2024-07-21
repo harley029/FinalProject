@@ -9,6 +9,9 @@ from contacts.views import (
     AddContactView,
     AddRecordView,
     SearchView,
+    DeleteView,
+    PhoneDeleteListView,
+    PhoneDeleteConfirmView,
 )
 
 urlpatterns = [
@@ -28,5 +31,8 @@ urlpatterns = [
     path("add-phone/", AddPhoneView.as_view(), name="add_phone"),
     path("contacts/add/", AddContactView.as_view(), name="add_contact"),
     path("contacts/add_record/", AddRecordView.as_view(), name="add_record"),
+    path("delete_book/", DeleteView.as_view(), name="delete_book"),
     path("search/", SearchView.as_view(), name="main_search"),
+    path("phones/delete/", PhoneDeleteListView.as_view(), name="phone_number_delete_list"),
+    path("phone/<int:pk>/delete/", PhoneDeleteConfirmView.as_view(), name="phone_delete_confirm"),
 ]

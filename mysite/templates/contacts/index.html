@@ -26,7 +26,7 @@
             <ul class="pager">
                 {% if records.has_previous %}
                 <li class="previous">
-                    <a href="{% url 'quotes:root_paginate' records.previous_page_number %}">
+                    <a href="{% url 'contacts:root_paginate' records.previous_page_number %}">
                         <span aria-hidden="true">←</span> Previous
                     </a>
                 </li>
@@ -34,7 +34,7 @@
 
                 {% if records.has_next %}
                 <li class="next">
-                    <a href="{% url 'quotes:root_paginate' records.next_page_number %}">
+                    <a href="{% url 'contacts:root_paginate' records.next_page_number %}">
                         Next <span aria-hidden="true">→</span>
                     </a>
                 </li>
