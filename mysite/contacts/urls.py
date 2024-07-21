@@ -14,6 +14,8 @@ from contacts.views import (
     PhoneDeleteConfirmView,
     TagDeleteListView,
     TagDeleteConfirmView,
+    NoteDeleteListView,
+    NoteDeleteConfirmView,
 )
 
 urlpatterns = [
@@ -39,4 +41,6 @@ urlpatterns = [
     path("phone/<int:pk>/delete/", PhoneDeleteConfirmView.as_view(), name="phone_delete_confirm"),
     path("tags/delete/", TagDeleteListView.as_view(), name="tag_delete_list"),
     path("tag/<int:pk>/delete/", TagDeleteConfirmView.as_view(), name="tag_delete_confirm"),
+    path("notes/delete/", NoteDeleteListView.as_view(), name="note_delete_list"),  # новий маршрут
+    path("note/<int:pk>/delete/", NoteDeleteConfirmView.as_view(), name="note_delete_confirm"),  # новий маршрут
 ]

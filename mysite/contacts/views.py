@@ -195,6 +195,32 @@ class TagDeleteConfirmView(View):
         return redirect("tag_delete_list")
 
 
+@method_decorator(login_required, name="dispatch")
+class NoteDeleteListView(View):
+    def get(self, request):
+        notes = Record.objects.filter(
+            note__isnull=False
+        ).distinct()  # Отримати всі записи з нотатками
+        return render(
+            request, "contacts/delete/delete_note_list.html", {"notes": notes}
+        )
+
+
+@method_decorator(login_required, name="dispatch")
+class NoteDeleteConfirmView(View):
+    def get(self, request, pk):
+        note_record = get_object_or_404(Record, pk=pk)
+        return render(
+            request, "contacts/delete/confirm_delete_note.html", {"object": note_record}
+        )
+
+    def post(self, request, pk):
+        note_record = get_object_or_404(Record, pk=pk)
+        note_record.note = None  # Видалити нотатку
+        note_record.save()
+        return redirect("note_delete_list")
+
+
 # @login_required
 # @require_POST
 # def delete_phone_number(request, pk):
