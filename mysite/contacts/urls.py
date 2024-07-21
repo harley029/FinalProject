@@ -16,8 +16,14 @@ from contacts.views import (
     TagDeleteConfirmView,
     NoteDeleteListView,
     NoteDeleteConfirmView,
-    ContactDeleteListView,  # новий маршрут
-    ContactDeleteConfirmView,  # новий маршрут
+    ContactDeleteListView,
+    ContactDeleteConfirmView,
+    SearchViewName,
+    SearchViewPhone,
+    SearchViewEmail,
+    SearchViewBirthday,
+    SearchViewTag,
+    SearchViewUpcomingBirthdays,
 )
 
 urlpatterns = [
@@ -43,8 +49,14 @@ urlpatterns = [
     path("phone/<int:pk>/delete/", PhoneDeleteConfirmView.as_view(), name="phone_delete_confirm"),
     path("tags/delete/", TagDeleteListView.as_view(), name="tag_delete_list"),
     path("tag/<int:pk>/delete/", TagDeleteConfirmView.as_view(), name="tag_delete_confirm"),
-    path("notes/delete/", NoteDeleteListView.as_view(), name="note_delete_list"),  # новий маршрут
-    path("note/<int:pk>/delete/", NoteDeleteConfirmView.as_view(), name="note_delete_confirm"),  # новий маршрут
-    path("contacts/delete/", ContactDeleteListView.as_view(), name="contact_delete_list"),  # новий маршрут
-    path("contact/<int:pk>/delete/", ContactDeleteConfirmView.as_view(), name="contact_delete_confirm"),  # новий маршрут
+    path("notes/delete/", NoteDeleteListView.as_view(), name="note_delete_list"),
+    path("note/<int:pk>/delete/", NoteDeleteConfirmView.as_view(), name="note_delete_confirm"),
+    path("contacts/delete/", ContactDeleteListView.as_view(), name="contact_delete_list"),
+    path("contact/<int:pk>/delete/", ContactDeleteConfirmView.as_view(), name="contact_delete_confirm"),
+    path('search/name/', SearchViewName.as_view(), name='search_name'),
+    path('search/phone/', SearchViewPhone.as_view(), name='search_phone'),
+    path('search/email/', SearchViewEmail.as_view(), name='search_email'),
+    path('search/birthday/', SearchViewBirthday.as_view(), name='search_birthday'),
+    path('search/tag/', SearchViewTag.as_view(), name='search_tag'),
+    path('search/upcoming_birthdays/', SearchViewUpcomingBirthdays.as_view(), name='search_upcoming_birthdays'),
 ]

@@ -16,7 +16,7 @@ class PhoneNumberForm(forms.ModelForm):
 
     def clean_number(self):
         number = self.cleaned_data.get("number")
-        number = PhoneNumber().normalize_phone(number)  # нормалізуємо номер телефону
+        number = PhoneNumber().normalize_phone(number)
         if PhoneNumber.objects.filter(number=number).exists():
             raise forms.ValidationError("This phone number already exists.")
         return number
@@ -50,3 +50,37 @@ class RecordForm(forms.ModelForm):
             if Record.objects.filter(note=note, contact=contact).exists():
                 raise forms.ValidationError("This note for the contact already exists.")
         return cleaned_data
+
+
+class SearchFormPhone(forms.Form):
+    query = forms.CharField(required=True, label="Phone Number")
+    def clean_number(self):
+        number = self.cleaned_data.get("number")
+        number = PhoneNumber().normalize_phone(number)  # нормалізуємо номер телефону
+        if PhoneNumber.objects.filter(number=number).exists():
+            raise forms.ValidationError("This phone number already exists.")
+        return number
+
+
+class SearchFormName(forms.Form):
+    query = forms.CharField(label="Name", max_length=255)
+
+
+class SearchFormEmail(forms.Form):
+    query = forms.EmailField(required=False, label="Search by Email")
+
+
+class SearchFormBirthday(forms.Form):
+    query = forms.DateField(
+        required=False,
+        widget=forms.DateInput(attrs={"type": "date"}),
+        label="Search by Birthday",
+    )
+
+
+class SearchFormTag(forms.Form):
+    query = forms.CharField(max_length=30, required=False, label="Search by Tag")
+
+
+class SearchFormUpcomingBirthdays(forms.Form):
+    pass

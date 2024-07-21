@@ -51,3 +51,4 @@ class Record(BaseModel):
 
     def __str__(self):
         return f"{self.contact.full_name}, {self.note}"
+

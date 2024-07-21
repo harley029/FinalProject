@@ -24,12 +24,13 @@
                 <a class="btn btn-secondary btn-custom" href="/">Home</a>
             </div>
             <div class="col-md-12">
-                <a class="btn btn-secondary btn-custom" href="#">Search by Name</a>
-                <a class="btn btn-secondary btn-custom" href="#">Search by Phone</a>
-                <a class="btn btn-secondary btn-custom" href="#">Search by Email</a>
-                <a class="btn btn-secondary btn-custom" href="#">Search by Birthday</a>
-                <a class="btn btn-secondary btn-custom" href="#">Search by Tag</a>
-                <a class="btn btn-secondary btn-custom" href="#">Upcoming birthdays</a>
+                <a class="btn btn-secondary btn-custom" href="{% url 'search_name' %}">Search by Name</a>
+                <a class="btn btn-secondary btn-custom" href="{% url 'search_phone' %}">Search by Phone</a>
+                <a class="btn btn-secondary btn-custom" href="{% url 'search_email' %}">Search by Email</a>
+                <a class="btn btn-secondary btn-custom" href="{% url 'search_birthday' %}">Search by Birthday</a>
+                <a class="btn btn-secondary btn-custom" href="{% url 'search_tag' %}">Search by Tag</a>
+                <a class="btn btn-secondary btn-custom" href="{% url 'search_upcoming_birthdays' %}">Upcoming
+                    birthdays</a>
             </div>
             <div class="mt-3">
                 <a href="{% url 'contacts' %}" class="btn btn-secondary">Cancel</a>

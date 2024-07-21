@@ -8,10 +8,13 @@ from django.views.generic import FormView
 from django.views.generic import DeleteView
 from django.urls import reverse, reverse_lazy
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
+from datetime import timedelta
+
 # from django.views.decorators.http import require_POST
 
 from contacts.models import Record, Contact, PhoneNumber, Tag
-from contacts.forms import TagForm, PhoneNumberForm, ContactForm, RecordForm
+from contacts.forms import TagForm, PhoneNumberForm, ContactForm, RecordForm, SearchFormName, SearchFormPhone, SearchFormEmail, SearchFormBirthday, SearchFormTag, SearchFormUpcomingBirthdays
 
 
 @method_decorator(login_required, name="dispatch")
@@ -252,3 +255,183 @@ class ContactDeleteConfirmView(View):
 @method_decorator(login_required, name="dispatch")
 class SearchView(TemplateView):
     template_name = "contacts/search/search_main.html"
+    # template_name = "contacts/search/search_results.html"
+
+
+@method_decorator(login_required, name="dispatch")
+class SearchViewName(FormView):
+    template_name = "contacts/search/search_results.html"
+    form_class = SearchFormName
+
+    def get(self, request, *args, **kwargs):
+        if "query" in request.GET:
+            form = self.form_class(request.GET)
+            if form.is_valid():
+                return self.form_valid(form)
+            else:
+                return self.form_invalid(form)
+        else:
+            return self.render_to_response(
+                self.get_context_data(form=self.form_class())
+            )
+
+    def form_valid(self, form):
+        query = form.cleaned_data.get("query")
+        results = Contact.objects.filter(
+            full_name__icontains=query, author=self.request.user
+        )
+        return self.render_to_response(
+            self.get_context_data(results=results, form=form)
+        )
+
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+@method_decorator(login_required, name="dispatch")
+class SearchViewPhone(FormView):
+    template_name = "contacts/search/search_results.html"
+    form_class = SearchFormPhone
+
+    def get(self, request, *args, **kwargs):
+        if "query" in request.GET:
+            form = self.form_class(request.GET)
+            if form.is_valid():
+                return self.form_valid(form)
+            else:
+                return self.form_invalid(form)
+        else:
+            return self.render_to_response(
+                self.get_context_data(form=self.form_class())
+            )
+
+    def form_valid(self, form):
+        query = form.cleaned_data.get("query")
+
+        # Фільтруємо по телефонним номерам
+        phone_numbers = PhoneNumber.objects.filter(number__icontains=query)
+
+        # Отримуємо унікальні контакти
+        contact_ids = phone_numbers.values_list("contact_id", flat=True)
+        results = Contact.objects.filter(id__in=contact_ids, author=self.request.user)
+
+        return self.render_to_response(
+            self.get_context_data(results=results, form=form)
+        )
+
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+@method_decorator(login_required, name="dispatch")
+class SearchViewEmail(FormView):
+    template_name = "contacts/search/search_results.html"
+    form_class = SearchFormEmail
+
+    def get(self, request, *args, **kwargs):
+        if "query" in request.GET:
+            form = self.form_class(request.GET)
+            if form.is_valid():
+                return self.form_valid(form)
+            else:
+                return self.form_invalid(form)
+        else:
+            return self.render_to_response(
+                self.get_context_data(form=self.form_class())
+            )
+
+    def form_valid(self, form):
+        query = form.cleaned_data.get("query")
+        results = Contact.objects.filter(
+            email__icontains=query, author=self.request.user
+        )
+        return self.render_to_response(
+            self.get_context_data(results=results, form=form)
+        )
+
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+@method_decorator(login_required, name="dispatch")
+class SearchViewBirthday(FormView):
+    template_name = "contacts/search/search_results.html"
+    form_class = SearchFormBirthday
+
+    def get(self, request, *args, **kwargs):
+        if "query" in request.GET:
+            form = self.form_class(request.GET)
+            if form.is_valid():
+                return self.form_valid(form)
+            else:
+                return self.form_invalid(form)
+        else:
+            return self.render_to_response(
+                self.get_context_data(form=self.form_class())
+            )
+
+    def form_valid(self, form):
+        query = form.cleaned_data.get("query")
+        # Assuming `query` is in 'YYYY-MM-DD' format
+        results = Contact.objects.filter(birthday=query, author=self.request.user)
+        return self.render_to_response(
+            self.get_context_data(results=results, form=form)
+        )
+
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+@method_decorator(login_required, name="dispatch")
+class SearchViewTag(FormView):
+    template_name = "contacts/search/search_results.html"
+    form_class = SearchFormTag
+
+    def get(self, request, *args, **kwargs):
+        if "query" in request.GET:
+            form = self.form_class(request.GET)
+            if form.is_valid():
+                return self.form_valid(form)
+            else:
+                return self.form_invalid(form)
+        else:
+            return self.render_to_response(
+                self.get_context_data(form=self.form_class())
+            )
+
+    def form_valid(self, form):
+        query = form.cleaned_data.get("query")
+        # Фільтруємо записи за тегами
+        tags = Tag.objects.filter(name__icontains=query)
+        contact_ids = Record.objects.filter(tags__in=tags).values_list(
+            "contact_id", flat=True
+        )
+        results = Contact.objects.filter(id__in=contact_ids, author=self.request.user)
+        return self.render_to_response(
+            self.get_context_data(results=results, form=form)
+        )
+
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+@method_decorator(login_required, name="dispatch")
+class SearchViewUpcomingBirthdays(ListView):
+    template_name = "contacts/search/search_results.html"
+    context_object_name = "results"
+
+    def get_queryset(self):
+        today = timezone.now().date()
+        next_week = today + timedelta(days=7)
+
+        # Пошук контактів з днями народження в межах найближчих 7 днів
+        return Contact.objects.filter(
+            birthday__month__in=[today.month, (today + timedelta(days=31)).month],
+            birthday__day__range=(today.day, next_week.day),
+            author=self.request.user,
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form"] = None  # Не потрібна форма для цього запиту
+        return context
