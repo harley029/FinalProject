@@ -43,6 +43,7 @@ class RecordForm(forms.ModelForm):
         cleaned_data = super().clean()
         note = cleaned_data.get("note")
         contact = cleaned_data.get("contact")
+        tags = cleaned_data.get("tags")
 
         if note and contact:
             # Перевірка унікальності цитати для конкретного автора

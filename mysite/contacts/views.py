@@ -133,11 +133,10 @@ class AddRecordView(TemplateView):
         form = RecordForm(request.POST)
         if form.is_valid():
             record = form.save(commit=False)
-            record.author = (
-                request.user
-            )  # Призначити поточного користувача, якщо потрібно
+            record.author = request.user
             record.save()
-            return redirect("add_record")  # Перенаправлення після успішного збереження
+            form.save_m2m()  # Зберегти зв'язок Many-to-Many
+            return redirect("add_record")
         return self.render_to_response({"form": form})
 
 
