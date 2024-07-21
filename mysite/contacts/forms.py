@@ -17,8 +17,8 @@ class PhoneNumberForm(forms.ModelForm):
     def clean_number(self):
         number = self.cleaned_data.get("number")
         number = PhoneNumber().normalize_phone(number)
-        if PhoneNumber.objects.filter(number=number).exists():
-            raise forms.ValidationError("This phone number already exists.")
+        # if PhoneNumber.objects.filter(number=number).exists():
+        #     raise forms.ValidationError("This phone number already exists.")
         return number
 
 
