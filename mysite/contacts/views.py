@@ -221,6 +221,29 @@ class NoteDeleteConfirmView(View):
         return redirect("note_delete_list")
 
 
+@method_decorator(login_required, name="dispatch")
+class ContactDeleteListView(View):
+    def get(self, request):
+        contacts = Contact.objects.filter(author=request.user)
+        return render(
+            request, "contacts/delete/delete_contact_list.html", {"contacts": contacts}
+        )
+
+
+@method_decorator(login_required, name="dispatch")
+class ContactDeleteConfirmView(View):
+    def get(self, request, pk):
+        contact = get_object_or_404(Contact, pk=pk, author=request.user)
+        return render(
+            request, "contacts/delete/confirm_delete_contact.html", {"object": contact}
+        )
+
+    def post(self, request, pk):
+        contact = get_object_or_404(Contact, pk=pk, author=request.user)
+        contact.delete()
+        return redirect("contact_delete_list")
+
+
 # @login_required
 # @require_POST
 # def delete_phone_number(request, pk):
