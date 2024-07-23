@@ -1,20 +1,33 @@
-from django.views.generic import ListView, DetailView, View
+from django.views.generic import (
+    ListView,
+    DetailView,
+    View,
+    TemplateView,
+    FormView,
+    DeleteView,
+)
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from django.views.generic import TemplateView
-from django.views.generic import FormView
-from django.views.generic import DeleteView
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse, reverse_lazy, timezone
 from django.shortcuts import get_object_or_404
-from django.utils import timezone
 from datetime import timedelta
 
 # from django.views.decorators.http import require_POST
 
 from contacts.models import Record, Contact, PhoneNumber, Tag
-from contacts.forms import TagForm, PhoneNumberForm, ContactForm, RecordForm, SearchFormName, SearchFormPhone, SearchFormEmail, SearchFormBirthday, SearchFormTag, SearchFormUpcomingBirthdays
+from contacts.forms import (
+    TagForm, 
+    PhoneNumberForm, 
+    ContactForm, 
+    RecordForm, 
+    SearchFormName, 
+    SearchFormPhone, 
+    SearchFormEmail, 
+    SearchFormBirthday, 
+    SearchFormTag, 
+    )
 
 
 @method_decorator(login_required, name="dispatch")
@@ -66,17 +79,17 @@ class AddBookView(TemplateView):
 class AddTagView(TemplateView):
     template_name = "contacts/add/add_tag.html"
 
-    def get(self, request, *args, **kwargs):
-        form = TagForm()  # припустимо, що у вас є форма для додавання тегу
+    def get(self, request):
+        form = TagForm()
         return self.render_to_response({"form": form})
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         if "cancel" in request.POST:
             return redirect("add_book")
         form = TagForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("add_tag")  # перенаправлення після успішного збереження
+            return redirect("add_tag")
         return self.render_to_response({"form": form})
 
 
@@ -85,9 +98,7 @@ class AddPhoneView(TemplateView):
     template_name = "contacts/add/add_phone.html"
 
     def get(self, request, *args, **kwargs):
-        form = (
-            PhoneNumberForm()
-        )  # припустимо, що у вас є форма для додавання номера телефону
+        form = (PhoneNumberForm())
         return self.render_to_response({"form": form})
 
     def post(self, request, *args, **kwargs):
@@ -96,7 +107,7 @@ class AddPhoneView(TemplateView):
         form = PhoneNumberForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("add_phone")  # перенаправлення після успішного збереження
+            return redirect("add_phone")
         return self.render_to_response({"form": form})
 
 
@@ -105,7 +116,7 @@ class AddContactView(TemplateView):
     template_name = "contacts/add/add_contact.html"
 
     def get(self, request, *args, **kwargs):
-        form = ContactForm()  # Використовуйте форму
+        form = ContactForm()
         return self.render_to_response({"form": form})
 
     def post(self, request, *args, **kwargs):
@@ -114,11 +125,9 @@ class AddContactView(TemplateView):
         form = ContactForm(request.POST)
         if form.is_valid():
             contact = form.save(commit=False)
-            contact.author = (
-                request.user
-            )  # Призначення поточного користувача автором контакту
+            contact.author = (request.user)
             contact.save()
-            return redirect("add_contact")  # Перенаправлення після успішного збереження
+            return redirect("add_contact")
         return self.render_to_response({"form": form})
 
 
@@ -127,7 +136,7 @@ class AddRecordView(TemplateView):
     template_name = "contacts/add/add_record.html"
 
     def get(self, request, *args, **kwargs):
-        form = RecordForm()  # Створіть форму для GET запиту
+        form = RecordForm()
         return self.render_to_response({"form": form})
 
     def post(self, request, *args, **kwargs):
@@ -152,18 +161,14 @@ class DeleteView(TemplateView):
 class PhoneDeleteListView(View):
     def get(self, request):
         phone_numbers = PhoneNumber.objects.all()
-        return render(
-            request, "contacts/delete/delete_phone_list.html", {"phone_numbers": phone_numbers}
-        )
+        return render(request, "contacts/delete/delete_phone_list.html", {"phone_numbers": phone_numbers})
 
 
 @method_decorator(login_required, name="dispatch")
 class PhoneDeleteConfirmView(View):
     def get(self, request, pk):
         phone_number = get_object_or_404(PhoneNumber, pk=pk)
-        return render(
-            request, "contacts/delete/confirm_delete_phone.html", {"object": phone_number}
-        )
+        return render(request, "contacts/delete/confirm_delete_phone.html", {"object": phone_number})
 
     def post(self, request, pk):
         phone_number = get_object_or_404(PhoneNumber, pk=pk)
@@ -182,9 +187,7 @@ class TagDeleteListView(View):
 class TagDeleteConfirmView(View):
     def get(self, request, pk):
         tag = get_object_or_404(Tag, pk=pk)
-        return render(
-            request, "contacts/delete/confirm_delete_tag.html", {"object": tag}
-        )
+        return render(request, "contacts/delete/confirm_delete_tag.html", {"object": tag})
 
     def post(self, request, pk):
         tag = get_object_or_404(Tag, pk=pk)
@@ -195,21 +198,15 @@ class TagDeleteConfirmView(View):
 @method_decorator(login_required, name="dispatch")
 class NoteDeleteListView(View):
     def get(self, request):
-        notes = Record.objects.filter(
-            note__isnull=False
-        ).distinct()  # Отримати всі записи з нотатками
-        return render(
-            request, "contacts/delete/delete_note_list.html", {"notes": notes}
-        )
+        notes = Record.objects.filter(note__isnull=False).distinct()  # Отримати всі записи з нотатками
+        return render(request, "contacts/delete/delete_note_list.html", {"notes": notes})
 
 
 @method_decorator(login_required, name="dispatch")
 class NoteDeleteConfirmView(View):
     def get(self, request, pk):
         note_record = get_object_or_404(Record, pk=pk)
-        return render(
-            request, "contacts/delete/confirm_delete_note.html", {"object": note_record}
-        )
+        return render(request, "contacts/delete/confirm_delete_note.html", {"object": note_record})
 
     def post(self, request, pk):
         note_record = get_object_or_404(Record, pk=pk)
@@ -222,18 +219,14 @@ class NoteDeleteConfirmView(View):
 class ContactDeleteListView(View):
     def get(self, request):
         contacts = Contact.objects.filter(author=request.user)
-        return render(
-            request, "contacts/delete/delete_contact_list.html", {"contacts": contacts}
-        )
+        return render(request, "contacts/delete/delete_contact_list.html", {"contacts": contacts})
 
 
 @method_decorator(login_required, name="dispatch")
 class ContactDeleteConfirmView(View):
     def get(self, request, pk):
         contact = get_object_or_404(Contact, pk=pk, author=request.user)
-        return render(
-            request, "contacts/delete/confirm_delete_contact.html", {"object": contact}
-        )
+        return render(request, "contacts/delete/confirm_delete_contact.html", {"object": contact})
 
     def post(self, request, pk):
         contact = get_object_or_404(Contact, pk=pk, author=request.user)
@@ -255,7 +248,6 @@ class ContactDeleteConfirmView(View):
 @method_decorator(login_required, name="dispatch")
 class SearchView(TemplateView):
     template_name = "contacts/search/search_main.html"
-    # template_name = "contacts/search/search_results.html"
 
 
 @method_decorator(login_required, name="dispatch")
@@ -263,7 +255,7 @@ class SearchViewName(FormView):
     template_name = "contacts/search/search_results.html"
     form_class = SearchFormName
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         if "query" in request.GET:
             form = self.form_class(request.GET)
             if form.is_valid():
@@ -293,7 +285,7 @@ class SearchViewPhone(FormView):
     template_name = "contacts/search/search_results.html"
     form_class = SearchFormPhone
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         if "query" in request.GET:
             form = self.form_class(request.GET)
             if form.is_valid():
@@ -307,17 +299,12 @@ class SearchViewPhone(FormView):
 
     def form_valid(self, form):
         query = form.cleaned_data.get("query")
-
         # Фільтруємо по телефонним номерам
         phone_numbers = PhoneNumber.objects.filter(number__icontains=query)
-
         # Отримуємо унікальні контакти
         contact_ids = phone_numbers.values_list("contact_id", flat=True)
         results = Contact.objects.filter(id__in=contact_ids, author=self.request.user)
-
-        return self.render_to_response(
-            self.get_context_data(results=results, form=form)
-        )
+        return self.render_to_response(self.get_context_data(results=results, form=form))
 
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data(form=form))
@@ -328,7 +315,7 @@ class SearchViewEmail(FormView):
     template_name = "contacts/search/search_results.html"
     form_class = SearchFormEmail
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         if "query" in request.GET:
             form = self.form_class(request.GET)
             if form.is_valid():
@@ -395,21 +382,15 @@ class SearchViewTag(FormView):
             else:
                 return self.form_invalid(form)
         else:
-            return self.render_to_response(
-                self.get_context_data(form=self.form_class())
-            )
+            return self.render_to_response(self.get_context_data(form=self.form_class()))
 
     def form_valid(self, form):
         query = form.cleaned_data.get("query")
         # Фільтруємо записи за тегами
         tags = Tag.objects.filter(name__icontains=query)
-        contact_ids = Record.objects.filter(tags__in=tags).values_list(
-            "contact_id", flat=True
-        )
+        contact_ids = Record.objects.filter(tags__in=tags).values_list("contact_id", flat=True)
         results = Contact.objects.filter(id__in=contact_ids, author=self.request.user)
-        return self.render_to_response(
-            self.get_context_data(results=results, form=form)
-        )
+        return self.render_to_response(self.get_context_data(results=results, form=form))
 
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data(form=form))
@@ -423,8 +404,6 @@ class SearchViewUpcomingBirthdays(ListView):
     def get_queryset(self):
         today = timezone.now().date()
         next_week = today + timedelta(days=7)
-
-        # Пошук контактів з днями народження в межах найближчих 7 днів
         return Contact.objects.filter(
             birthday__month__in=[today.month, (today + timedelta(days=31)).month],
             birthday__day__range=(today.day, next_week.day),
