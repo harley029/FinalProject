@@ -42,13 +42,6 @@
                     {% for contact in results %}
                     <li>
                         <p><a href="{% url 'contact_detail' contact.id %}">{{ contact.full_name }}</a></p>
-                        <!-- <strong>Address:</strong> <p>{{ contact.address }}</span>
-                        <strong>Email:</strong> <span class="author-phone">{{ contact.email }}</span>
-                        {% for phone in contact.phone_numbers.all %}
-                        <div><strong>Phone:</strong> <span class="author-phone">{{ phone.number }}</span></div>
-                        {% endfor %}
-                        {% if contact.birthday %}<strong>Birthday:</strong> <span class="author-phone">{{ contact.birthday }}</span>{% endif %}
-                        {% if contact.record.tags.all %}<p>Tags: {{ contact.record.tags.all|join:", " }}</p>{% endif %} -->
                     </li>
                     {% empty %}
                     <li>No results found</li>

@@ -6,6 +6,7 @@ from django.views.generic import (
     FormView,
     DeleteView,
 )
+from django.views.generic.edit import UpdateView
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.utils.decorators import method_decorator
@@ -19,16 +20,20 @@ from datetime import timedelta
 
 from contacts.models import Record, Contact, PhoneNumber, Tag
 from contacts.forms import (
-    TagForm, 
-    PhoneNumberForm, 
-    ContactForm, 
-    RecordForm, 
-    SearchFormName, 
-    SearchFormPhone, 
-    SearchFormEmail, 
-    SearchFormBirthday, 
-    SearchFormTag, 
-    )
+    TagForm,
+    PhoneNumberForm,
+    ContactForm,
+    RecordForm,
+    SearchFormName,
+    SearchFormPhone,
+    SearchFormEmail,
+    SearchFormBirthday,
+    SearchFormTag,
+    UpdateTagForm,
+    UpdateContactForm,
+    UpdateRecordForm,
+    UpdatePhoneNumberForm,
+)
 
 
 @method_decorator(login_required, name="dispatch")
@@ -422,3 +427,101 @@ class SearchViewUpcomingBirthdays(ListView):
 @method_decorator(login_required, name="dispatch")
 class UpdateView(TemplateView):
     template_name = "contacts/update/update_main.html"
+
+
+@method_decorator(login_required, name="dispatch")
+class TagListView(ListView):
+    model = Tag
+    template_name = "contacts/update/tag_list.html"
+    context_object_name = "tags"
+
+
+@login_required
+def update_tag(request, pk):
+    tag = get_object_or_404(Tag, pk=pk)
+    if request.method == "POST":
+        form = UpdateTagForm(request.POST, instance=tag)
+        if form.is_valid():
+            form.save()
+            return redirect("tag_list")
+    else:
+        form = UpdateTagForm(instance=tag)
+    return render(
+        request, "contacts/update/update_tag.html", {"form": form, "tag": tag}
+    )
+
+
+@method_decorator(login_required, name="dispatch")
+class ContactListView(ListView):
+    model = Contact
+    template_name = "contacts/update/contact_list.html"
+    context_object_name = "contacts"
+
+
+@login_required
+def update_contact(request, pk):
+    contact = get_object_or_404(Contact, pk=pk)
+    if request.method == "POST":
+        form = UpdateContactForm(request.POST, instance=contact)
+        if form.is_valid():
+            form.save()
+            return redirect("contact_list")
+    else:
+        form = UpdateContactForm(instance=contact)
+    return render(request, "contacts/update/update_contact.html", {"form": form, "contact": contact})
+
+
+@method_decorator(login_required, name="dispatch")
+class RecordListView(ListView):
+    model = Record
+    template_name = "contacts/update/note_list.html"
+    context_object_name = "notes"
+
+    def get_queryset(self):
+        # Отримати всі нотатки, у яких є значення (не пусті)
+        return Record.objects.filter(note__isnull=False).distinct()
+
+
+@login_required
+def update_note(request, pk):
+    note = get_object_or_404(Record, pk=pk)
+    if request.method == "POST":
+        form = UpdateRecordForm(request.POST, instance=note)
+        if form.is_valid():
+            form.save()
+            return redirect("note_list")
+    else:
+        form = UpdateRecordForm(instance=note)
+    return render(
+        request,
+        "contacts/update/update_note.html",
+        {"form": form, "note": note}
+    )
+
+
+@method_decorator(login_required, name="dispatch")
+class PhoneNumberListView(ListView):
+    model = PhoneNumber
+    template_name = "contacts/update/phone_number_list.html"
+    context_object_name = "phone_numbers"
+
+
+@login_required
+def update_phone_number(request, pk):
+    phone_number = get_object_or_404(PhoneNumber, pk=pk)
+
+    if request.method == "POST":
+        form = UpdatePhoneNumberForm(request.POST, instance=phone_number)
+        if form.is_valid():
+            form.save()
+            return redirect(
+                reverse("phone_number_list")
+            )
+    else:
+        form = UpdatePhoneNumberForm(instance=phone_number)
+
+    return render(
+        request,
+        "contacts/update/update_phone_number.html",
+        {"form": form, "phone_number": phone_number},
+    )

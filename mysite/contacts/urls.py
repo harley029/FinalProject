@@ -25,6 +25,14 @@ from contacts.views import (
     SearchViewTag,
     SearchViewUpcomingBirthdays,
     UpdateView,
+    TagListView,
+    update_tag,
+    ContactListView,
+    update_contact,
+    RecordListView,
+    update_note,
+    PhoneNumberListView,
+    update_phone_number,
 )
 
 urlpatterns = [
@@ -55,4 +63,12 @@ urlpatterns = [
     path('search/tag/', SearchViewTag.as_view(), name='search_tag'),
     path('search/upcoming_birthdays/', SearchViewUpcomingBirthdays.as_view(), name='search_upcoming_birthdays'),
     path("update/", UpdateView.as_view(), name="main_update"),
+    path("update/tags/", TagListView.as_view(), name="tag_list"),
+    path("update/tag/<int:pk>/", update_tag, name="update_tag"),
+    path("update/contacts/", ContactListView.as_view(), name="contact_list"),
+    path("update/contact/<int:pk>/", update_contact, name="update_contact"),
+    path("update/notes/", RecordListView.as_view(), name="note_list"),
+    path("update/note/<int:pk>/", update_note, name="update_note"),
+    path('phones/', PhoneNumberListView.as_view(), name='phone_number_list'),
+    path('phone/<int:pk>/update/', update_phone_number, name='update_phone_number'),
 ]
