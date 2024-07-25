@@ -45,7 +45,7 @@ class PhoneNumber(BaseModel):
 
 
 class Tag(BaseModel):
-    name = models.CharField(max_length=30, null=True, unique=True)
+    name = models.CharField(max_length=30, null=False, unique=True)
 
     def __str__(self):
         return self.name
