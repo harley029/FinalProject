@@ -36,7 +36,7 @@ from contacts.views import (
 )
 
 urlpatterns = [
-    path("contacts/", MainView.as_view(), name="contacts"),  # Сторінка контактів
+    path("contacts/", MainView.as_view(), name="contacts"),
     path("contacts/page/<int:page>/", MainView.as_view(), name="contacts_paginate"),
     path("contact/<str:contact_id>/", RecordDetailView.as_view(), name="contact_detail"),
     path("tag/<str:tag_name>/", TagDetailView.as_view(), name="tag_detail"),

@@ -16,8 +16,6 @@ from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from datetime import timedelta
 
-# from django.views.decorators.http import require_POST
-
 from contacts.models import Record, Contact, PhoneNumber, Tag
 from contacts.forms import (
     TagForm,
@@ -241,17 +239,6 @@ class ContactDeleteConfirmView(View):
         contact.delete()
         return redirect("contact_delete_list")
 
-
-# @login_required
-# @require_POST
-# def delete_phone_number(request, pk):
-#     phone_number = get_object_or_404(PhoneNumber, pk=pk)
-#     if request.method == "POST":
-#         phone_number.delete()
-#         return redirect(reverse_lazy("phone_number_delete_list"))
-#     return render(
-#         request, "contacts/confirm_delete_phone.html", {"object": phone_number}
-#     )
 
 @method_decorator(login_required, name="dispatch")
 class SearchView(TemplateView):
