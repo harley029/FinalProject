@@ -36,6 +36,7 @@ class MainView(ListView):
     model = Record
     template_name = "contacts/index.html"
     context_object_name = "records"
+    # paginate_by = 5
 
     def get_queryset(self):
         return Record.objects.filter(contact__author=self.request.user).order_by("contact__full_name")
@@ -47,6 +48,7 @@ class RecordDetailView(DetailView):
     template_name = "contacts/contact_details.html"
     context_object_name = "contact"
     pk_url_kwarg = "contact_id"
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

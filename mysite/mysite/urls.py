@@ -6,4 +6,5 @@ urlpatterns = [
     path("", include("home.urls")),
     path("", include("contacts.urls")),
     path("users/", include("users.urls")),
+    path("rss/", include("rss.urls")),
 ]

@@ -7,6 +7,9 @@ name = "pypi"
 django = "*"
 django-environ = "*"
 psycopg2-binary = "*"
+bs4 = "*"
+requests = "*"
+lxml = "*"
 
 [dev-packages]
 

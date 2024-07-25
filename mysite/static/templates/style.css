@@ -86,3 +86,8 @@ a {
 .pager .previous>a, .pager .previous>span {
     float: left;
 }
+
+
+.news_item {
+  padding-bottom: 48px;
+}

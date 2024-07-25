@@ -48,6 +48,7 @@ LOCAL_APPS = [
     "core",
     "home",
     "contacts",
+    "rss"
 ]
 
 INSTALLED_APPS = INSTALLED_FRAMEWORKS + LOCAL_APPS

@@ -20,11 +20,14 @@ class Contact(BaseModel):
 
 
 class PhoneNumber(BaseModel):
-    contact = models.ForeignKey(Contact, related_name="phone_numbers", on_delete=models.CASCADE)
+    contact = models.ForeignKey(
+        Contact, related_name="phone_numbers", on_delete=models.CASCADE
+    )
     number = models.CharField(max_length=13)
 
     def __str__(self):
         return self.number
+
     def normalize_phone(self, phone):
         phone = "".join(filter(str.isdigit, phone))
         if len(phone) == 12:
@@ -35,6 +38,10 @@ class PhoneNumber(BaseModel):
 
     def set_phone(self, phone):
         self.number = self.normalize_phone(phone)
+
+    def save(self, *args, **kwargs):
+        self.number = self.normalize_phone(self.number)
+        super().save(*args, **kwargs)
 
 
 class Tag(BaseModel):
@@ -51,4 +58,3 @@ class Record(BaseModel):
 
     def __str__(self):
         return f"{self.contact.full_name}, {self.note}"
-

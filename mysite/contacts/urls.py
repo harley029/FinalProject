@@ -28,16 +28,10 @@ from contacts.views import (
 
 urlpatterns = [
     path("contacts/", MainView.as_view(), name="contacts"),  # Сторінка контактів
-    path("contacts/<int:page>/", MainView.as_view(), name="contacts_paginate"),
-    path(
-        "contact/<str:contact_id>/", RecordDetailView.as_view(), name="contact_detail"
-    ),
+    path("contacts/page/<int:page>/", MainView.as_view(), name="contacts_paginate"),
+    path("contact/<str:contact_id>/", RecordDetailView.as_view(), name="contact_detail"),
     path("tag/<str:tag_name>/", TagDetailView.as_view(), name="tag_detail"),
-    path(
-        "tag/<str:tag_name>/page/<int:page>/",
-        TagDetailView.as_view(),
-        name="tag_detail_paginate",
-    ),
+    path("tag/<str:tag_name>/page/<int:page>/", TagDetailView.as_view(), name="tag_detail_paginate",),
     path("add-book/", AddBookView.as_view(), name="add_book"),
     path("add_tags/", AddTagView.as_view(), name="add_tag"),
     path("add-phone/", AddPhoneView.as_view(), name="add_phone"),

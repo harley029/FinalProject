@@ -17,30 +17,31 @@
             <div class="tags">
                 Tags:
                 {% for tag in record.tags.all %}
-                <a class="tag" href="/tag/{{ tag.name }}">{{ tag.name }}</a>
+                <a class="tag" href="/tag/{{ tag.name }}/">{{ tag.name }}</a>
                 {% endfor %}
             </div>
         </div>
         {% endfor %}
-        <nav>
-            <ul class="pager">
-                {% if records.has_previous %}
-                <li class="previous">
-                    <a href="{% url 'contacts:root_paginate' records.previous_page_number %}">
-                        <span aria-hidden="true">←</span> Previous
-                    </a>
-                </li>
-                {% endif %}
-
-                {% if records.has_next %}
-                <li class="next">
-                    <a href="{% url 'contacts:root_paginate' records.next_page_number %}">
-                        Next <span aria-hidden="true">→</span>
-                    </a>
-                </li>
-                {% endif %}
-            </ul>
-        </nav>
+      
+    <nav>
+        <ul class="pager">
+            {% if records.has_previous %}
+            <li class="previous">
+                <a href="{% url 'contacts_paginate' page=records.previous_page_number %}">
+                    <span aria-hidden="true">←</span> Previous
+                </a>
+            </li>
+            {% endif %}
+    
+            {% if records.has_next %}
+            <li class="next">
+                <a href="{% url 'contacts_paginate' page=records.next_page_number %}">
+                    Next <span aria-hidden="true">→</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
         <div style="height: 70px;"></div>
     </div>
 </div>
