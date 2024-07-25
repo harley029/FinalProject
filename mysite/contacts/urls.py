@@ -24,6 +24,7 @@ from contacts.views import (
     SearchViewBirthday,
     SearchViewTag,
     SearchViewUpcomingBirthdays,
+    UpdateView,
 )
 
 urlpatterns = [
@@ -38,7 +39,6 @@ urlpatterns = [
     path("contacts/add/", AddContactView.as_view(), name="add_contact"),
     path("contacts/add_record/", AddRecordView.as_view(), name="add_record"),
     path("delete_book/", DeleteView.as_view(), name="delete_book"),
-    path("search/", SearchView.as_view(), name="main_search"),
     path("phones/delete/", PhoneDeleteListView.as_view(), name="phone_number_delete_list"),
     path("phone/<int:pk>/delete/", PhoneDeleteConfirmView.as_view(), name="phone_delete_confirm"),
     path("tags/delete/", TagDeleteListView.as_view(), name="tag_delete_list"),
@@ -47,10 +47,12 @@ urlpatterns = [
     path("note/<int:pk>/delete/", NoteDeleteConfirmView.as_view(), name="note_delete_confirm"),
     path("contacts/delete/", ContactDeleteListView.as_view(), name="contact_delete_list"),
     path("contact/<int:pk>/delete/", ContactDeleteConfirmView.as_view(), name="contact_delete_confirm"),
+    path("search/", SearchView.as_view(), name="main_search"),
     path('search/name/', SearchViewName.as_view(), name='search_name'),
     path('search/phone/', SearchViewPhone.as_view(), name='search_phone'),
     path('search/email/', SearchViewEmail.as_view(), name='search_email'),
     path('search/birthday/', SearchViewBirthday.as_view(), name='search_birthday'),
     path('search/tag/', SearchViewTag.as_view(), name='search_tag'),
     path('search/upcoming_birthdays/', SearchViewUpcomingBirthdays.as_view(), name='search_upcoming_birthdays'),
+    path("update/", UpdateView.as_view(), name="main_update"),
 ]

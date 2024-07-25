@@ -417,3 +417,8 @@ class SearchViewUpcomingBirthdays(ListView):
         context = super().get_context_data(**kwargs)
         context["form"] = None  # Не потрібна форма для цього запиту
         return context
+
+
+@method_decorator(login_required, name="dispatch")
+class UpdateView(TemplateView):
+    template_name = "contacts/update/update_main.html"

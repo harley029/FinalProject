@@ -8,7 +8,7 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
     {% load static %}
     <link rel="stylesheet" href="{% static 'templates/style.css' %}">
-    <title>Search Item</title>
+    <title>Update Item</title>
     <style>
         .btn-custom {
             min-width: 120px;
@@ -24,13 +24,11 @@
                 <a class="btn btn-secondary btn-custom" href="/">Home</a>
             </div>
             <div class="col-md-12">
-                <a class="btn btn-secondary btn-custom" href="{% url 'search_name' %}">Search by Name</a>
-                <a class="btn btn-secondary btn-custom" href="{% url 'search_phone' %}">Search by Phone</a>
-                <a class="btn btn-secondary btn-custom" href="{% url 'search_email' %}">Search by Email</a>
-                <a class="btn btn-secondary btn-custom" href="{% url 'search_birthday' %}">Search by Birthday</a>
-                <a class="btn btn-secondary btn-custom" href="{% url 'search_tag' %}">Search by Tag</a>
-                <a class="btn btn-secondary btn-custom" href="{% url 'search_upcoming_birthdays' %}">Upcoming
-                    birthdays</a>
+                <a class="btn btn-secondary btn-custom" href="#">Update Name</a>
+                <a class="btn btn-secondary btn-custom" href="#">Update Phone</a>
+                <a class="btn btn-secondary btn-custom" href="#">Update Email</a>
+                <a class="btn btn-secondary btn-custom" href="#">Update Birthday</a>
+                <a class="btn btn-secondary btn-custom" href="#">Update Tag</a>
             </div>
             <div class="mt-3">
                 <a href="{% url 'contacts' %}" class="btn btn-secondary">Buck to Contacts</a>
