@@ -4,12 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "*"
-django-environ = "*"
-psycopg2-binary = "*"
-bs4 = "*"
-requests = "*"
-lxml = "*"
+django = "5.0.7"
+django-environ = "0.11.2"
+psycopg2-binary = "2.9.9"
+bs4 = "0.0.2"
+requests = "2.32.3"
+lxml = "5.2.2"
 
 [dev-packages]
 
