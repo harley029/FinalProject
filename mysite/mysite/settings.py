@@ -48,7 +48,8 @@ LOCAL_APPS = [
     "core",
     "home",
     "contacts",
-    "rss"
+    "rss",
+    "files",
 ]
 
 INSTALLED_APPS = INSTALLED_FRAMEWORKS + LOCAL_APPS
@@ -86,16 +87,6 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-# PostgreSQL template
 DATABASES = {
     "default": {
         "ENGINE": env("DATABASE_ENGINE"),
@@ -143,6 +134,8 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_URL = "/media/"
 
 # папка, куди збериться всі файли під час: python manage.py collectstatic
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")

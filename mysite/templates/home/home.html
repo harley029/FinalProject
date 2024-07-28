@@ -41,7 +41,7 @@
                 <div class="d-flex gap-3 justify-content-center lead fw-normal">
                     {% if user.is_authenticated %}
                     <a class="btn btn-primary btn-custom" href="{% url 'contacts' %}">Address Book</a>
-                    <a class="btn btn-success btn-custom" href="#">Files</a>
+                    <a class="btn btn-success btn-custom" href="{% url 'files:files' %}">Files</a>
                     {% endif %}
                     <a class="btn btn-secondary btn-custom" href="{% url 'rss' %}">News</a>
                 </div>
