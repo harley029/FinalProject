@@ -12,3 +12,11 @@ class OurTeamView(View):
 
     def get(self, request):
         return render(request, "home/our_team.html")
+
+
+class AppFeaturesView(View):
+
+    def get(self, request):
+        return render(request, "home/home_features.html")
+
+
