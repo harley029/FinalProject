@@ -162,3 +162,28 @@ EMAIL_USE_TLS = False
 EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+# LOGGING = {
+#     "version": 1,
+#     "disable_existing_loggers": False,
+#     "handlers": {
+#         "file": {
+#             "level": "DEBUG",
+#             "class": "logging.FileHandler",
+#             "filename": os.path.join(BASE_DIR, "debug.log"),
+#         },
+#     },
+#     "loggers": {
+#         "django": {
+#             "handlers": ["file"],
+#             "level": "DEBUG",
+#             "propagate": True,
+#         },
+#         "mysite": {  # замініть 'myapp' на ім'я вашого додатку
+#             "handlers": ["file"],
+#             "level": "DEBUG",
+#             "propagate": True,
+#         },
+#     },
+# }

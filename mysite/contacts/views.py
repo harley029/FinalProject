@@ -33,6 +33,9 @@ from contacts.forms import (
     UpdatePhoneNumberForm,
 )
 
+import logging
+logger = logging.getLogger(__name__)
+from django import forms
 
 @method_decorator(login_required, name="dispatch")
 class MainView(ListView):
@@ -391,6 +394,7 @@ class SearchViewTag(FormView):
         return self.render_to_response(self.get_context_data(form=form))
 
 
+
 @method_decorator(login_required, name="dispatch")
 class SearchViewUpcomingBirthdays(ListView):
     template_name = "contacts/search/search_results.html"
@@ -399,15 +403,22 @@ class SearchViewUpcomingBirthdays(ListView):
     def get_queryset(self):
         today = timezone.now().date()
         next_week = today + timedelta(days=7)
-        return Contact.objects.filter(
-            birthday__month__in=[today.month, (today + timedelta(days=31)).month],
-            birthday__day__range=(today.day, next_week.day),
+        current_month_birthdays = Contact.objects.filter(
+            birthday__month=today.month,
+            birthday__day__range=(today.day, 31),
             author=self.request.user,
         )
+        next_month_birthdays = Contact.objects.filter(
+            birthday__month=next_week.month,
+            birthday__day__range=(1, next_week.day),
+            author=self.request.user,
+        )
+        results = current_month_birthdays | next_month_birthdays
+        return results
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["form"] = None  # Не потрібна форма для цього запиту
+        context["form"] = None  # Форма не потрібна
         return context
 
 
@@ -443,6 +454,13 @@ class ContactListView(ListView):
     model = Contact
     template_name = "contacts/update/contact_list.html"
     context_object_name = "contacts"
+
+    def get_queryset(self):
+        return (
+            Contact.objects.filter(author=self.request.user)
+            .select_related("author")
+            .order_by("full_name")
+        )
 
 
 @login_required
