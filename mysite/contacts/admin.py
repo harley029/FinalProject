@@ -1,11 +1,9 @@
 from django.contrib import admin
 
 from contacts.models import Contact, PhoneNumber, Tag, Record
+from rss.models import News
+from files.models import File
 
-# admin.site.register(Contact)
-# admin.site.register(Record)
-# admin.site.register(PhoneNumber)
-# admin.site.register(Tag)
 
 @admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):
@@ -33,3 +31,21 @@ class TagAdmin(admin.ModelAdmin):
     list_display = ("name",)
     list_filter = ("name",)
     search_fields = ("name",)
+
+
+@admin.register(News)
+class NewsAdmin(admin.ModelAdmin):
+    list_display = ("title",)
+    search_fields = ("title",)
+
+
+@admin.register(File)
+class FilesAdmin(admin.ModelAdmin):
+    list_display = ("user", "description", "path")
+    search_fields = ("title",)
+
+
+# admin.site.register(Contact)
+# admin.site.register(Record)
+# admin.site.register(PhoneNumber)
+# admin.site.register(Tag)
