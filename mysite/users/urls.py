@@ -8,8 +8,8 @@ from django.contrib.auth.views import (
 )
 
 
-from . import views
-from .forms import LoginForm
+from users import views
+from users.forms import LoginForm
 
 app_name = "users"
 

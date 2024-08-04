@@ -19,7 +19,7 @@ class RegisterView(View):
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return redirect(to="quotes:root")
+            return redirect(to="contacts")
         return super().dispatch(request, *args, **kwargs)
     # dispatch попереджає перехід на signup залогіненому юзеру
     def get(self, request):
